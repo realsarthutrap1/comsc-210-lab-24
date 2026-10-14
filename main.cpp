@@ -6,17 +6,17 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <list>
+#include <set>
 #include <sstream>
 #include "Goat.h"
 using namespace std;
 
 const int SZ_NAMES = 200, SZ_COLORS = 25, MAX_AGE = 20;
 
-int select_goat(const list<Goat>& trip);
-void delete_goat(list<Goat> &trip);
-void add_goat(list<Goat> &trip, string [], string []);
-void display_trip(const list<Goat>& trip);
+int select_goat(const set<Goat>& trip);
+void delete_goat(set<Goat> &trip);
+void add_goat(set<Goat> &trip, string [], string []);
+void display_trip(const set<Goat>& trip);
 int main_menu();
 
 int main() {
@@ -43,7 +43,7 @@ int main() {
     fin1.close();
 
     // keep the menu running until the user quits
-    list<Goat> trip;
+    set<Goat> trip;
     int choice;
     do {
         choice = main_menu();
@@ -90,16 +90,20 @@ int main_menu() {
     }
 }
 
-void add_goat(list<Goat>& trip, string names[], string colors[]) {
+void add_goat(set<Goat>& trip, string names[], string colors[]) {
     string name = names[rand() % SZ_NAMES];
     string color = colors[rand() % SZ_COLORS];
     int age = rand() % (MAX_AGE + 1);
-    trip.push_back(Goat(name, age, color));
-    cout << "\nAdded: " << name << " (" << age << ", " << color << ")" << endl;
+    // names are unique because the set compares goats by name
+    auto result = trip.insert(Goat(name, age, color));
+    if (result.second)
+        cout << "\nAdded: " << name << " (" << age << ", " << color << ")" << endl;
+    else
+        cout << "\n" << name << " is already in the trip. No goat added." << endl;
 }
 
-void display_trip(const list<Goat>& trip) {
-    cout << "\nGoats in current trip: " << trip.size() << endl;
+void display_trip(const set<Goat>& trip) {
+    cout << "\nGoats in current trip: " << trip.size() << " (sorted by name)" << endl;
     if (trip.empty()) {
         cout << "No goats in the trip." << endl;
         return;
@@ -112,7 +116,7 @@ void display_trip(const list<Goat>& trip) {
     }
 }
 
-int select_goat(const list<Goat>& trip) {
+int select_goat(const set<Goat>& trip) {
     display_trip(trip);
     if (trip.empty())
         return 0;
@@ -136,7 +140,7 @@ int select_goat(const list<Goat>& trip) {
     }
 }
 
-void delete_goat(list<Goat>& trip) {
+void delete_goat(set<Goat>& trip) {
     if (trip.empty()) {
         cout << "\nNo goats to delete. Add a goat first." << endl;
         return;
