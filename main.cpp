@@ -1,4 +1,4 @@
-// COMSC-210 | Lab 23 | Sarthak Pani
+// COMSC-210 | Lab 24 | Sarthak Pani
 // adapted from the instructor goat manager starter
 
 #include <cstdlib>
@@ -67,7 +67,7 @@ int main() {
 }
 
 int main_menu() {
-    cout << "\n*** GOAT MANAGER 3001 ***\n"
+    cout << "\n*** GOAT MANAGER 3002 ***\n"
          << "[1] Add a goat\n"
          << "[2] Delete a goat\n"
          << "[3] List goats\n"
